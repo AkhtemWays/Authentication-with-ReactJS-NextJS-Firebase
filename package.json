@@ -8,8 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "ant-design": "^1.0.0",
+    "antd": "^4.6.2",
+    "firebase": "^7.19.1",
+    "firebaseui": "^4.6.1",
     "next": "9.5.3",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-drag-drawer": "^3.3.4"
   }
 }

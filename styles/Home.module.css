@@ -5,6 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #eeeeee;
 }
 
 .main {
@@ -16,6 +17,15 @@
   align-items: center;
 }
 
+.loginFormButton {
+  margin-right: 10px;
+}
+.loginForm {
+  box-shadow: #eaeaea;
+  width: 20%;
+  border: 30px solid white;
+  background: white;
+}
 .footer {
   width: 100%;
   height: 100px;
