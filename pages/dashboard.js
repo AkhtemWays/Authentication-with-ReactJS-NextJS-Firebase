@@ -3,6 +3,7 @@ import styles from "../styles/Home.module.css";
 import Firebase from "../firebase/config";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import verifyEmail from "../firebase/emailSendConfig";
 
 export default function signin() {
   const router = useRouter();
@@ -22,25 +23,7 @@ export default function signin() {
 
     router.push("/signin");
   });
-  const sendEmail = (ev) => {
-    console.log(Firebase.getCurrentUser());
-    Firebase.getCurrentUser()
-      .SendEmailVerificationAsync()
-      .ContinueWith((task) => {
-        if (task.IsCanceled) {
-          Debug.LogError("SendEmailVerificationAsync was canceled.");
-          return;
-        }
-        if (task.IsFaulted) {
-          Debug.LogError(
-            "SendEmailVerificationAsync encountered an error: " + task.Exception
-          );
-          return;
-        }
 
-        Debug.Log("Email sent successfully.");
-      });
-  };
   return user ? (
     <div className={styles.container}>
       <h1>Hello {user.email}</h1>
@@ -48,7 +31,12 @@ export default function signin() {
       <Link href="/test">
         <a>Go to test page</a>
       </Link>
-      <button onClick={sendEmail}>Update Email</button>
+
+      <button onClick={verifyEmail}>Verify Email</button>
+
+      <Link href="/email-update">
+        <a>Update Email</a>
+      </Link>
     </div>
   ) : (
     <div className={styles.container}>Loading...</div>

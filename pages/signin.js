@@ -83,7 +83,7 @@ export default function NormalLoginForm() {
             rules={[
               {
                 required: true,
-                message: "Please input your Username!",
+                message: "Please input your Email!",
               },
             ]}
           >
