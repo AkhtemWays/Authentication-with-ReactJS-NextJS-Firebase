@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Firebase from "../firebase/config";
@@ -93,7 +93,7 @@ export default function NormalLoginForm() {
               ]}
             >
               <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
+                prefix={<MailOutlined className="site-form-item-icon" />}
                 placeholder="Email"
                 type="email"
                 value={email}

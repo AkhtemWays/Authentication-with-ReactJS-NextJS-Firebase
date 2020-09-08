@@ -70,29 +70,32 @@ export default function RegistrationForm() {
 
   const [disabled, setDisabled] = useState(false);
   // logic
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     setDisabled(true);
     setTimeout(() => {
       setDisabled(false);
     }, 2000);
-
-    firestore
-      .collection("users")
-      .add({
-        username: values.username,
-        password: values.password,
-        email: values.email,
-        birthdate: values.date._d,
-        gender: values.gender,
-        region: values.region,
-        country: values.country,
-        phone: values.phone,
-      })
+    Firebase.signUp(values.email, values.password)
       .then((data) => {
-        success();
         router.push("/signin");
+        firestore
+          .collection("users")
+          .add({
+            username: values.username,
+            password: values.password,
+            email: values.email,
+            birthdate: values.date._d,
+            gender: values.gender,
+            region: values.region,
+            country: values.country,
+            phone: values.phone,
+          })
+          .then((data) => {
+            success();
+          })
+          .catch((e) => error(`Database error ${e.message}`));
       })
-      .catch((e) => error(`Database error ${e.message}`));
+      .catch((e) => console.log(e));
   };
 
   useEffect(() => {
@@ -114,7 +117,6 @@ export default function RegistrationForm() {
   });
 
   const handleChange = useCallback((ev) => {
-    console.log(ev);
     switch (ev.target.name) {
       case "username":
         setUsername(ev.target.value);
@@ -170,7 +172,7 @@ export default function RegistrationForm() {
     }, 1500);
   }
 
-  function error() {
+  function error(errorMessage) {
     const modal = Modal.error({
       title: "Error occured",
       content: errorMessage,
