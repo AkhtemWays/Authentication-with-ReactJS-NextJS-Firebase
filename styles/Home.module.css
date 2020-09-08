@@ -21,7 +21,7 @@
   margin-right: 10px;
 }
 .loginForm {
-  box-shadow: #eaeaea;
+  box-shadow: #eeeaea;
   width: 20%;
   border: 30px solid white;
   background: white;
@@ -33,6 +33,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.registerForm {
+  box-shadow: #eeeeee;
+  width: 35%;
+  border: 30px solid white;
+  background: white;
 }
 
 .footer img {

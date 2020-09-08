@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import verifyEmail from "../firebase/emailSendConfig";
 
-export default function signin() {
+export default function dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     Firebase.getAuthState().then((serverUser) => {
       if (!serverUser) {
