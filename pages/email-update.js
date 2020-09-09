@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styles from "../styles/Home.module.css";
-import Firebase from "../firebase/config";
+import Firebase, { firestore } from "../firebase/config";
 import { Form, Input, Button, Spin } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import * as icons from "@ant-design/icons";
 import { Modal } from "antd";
 import { useRouter } from "next/router";
-import emailValidation from "../utils/customEmailValidation";
-import validatePassword from "../utils/customPasswordValidation";
-import passwordValidation from "../utils/customPasswordValidation";
 
 export default function emailUpdate() {
   // Logic
@@ -49,34 +46,23 @@ export default function emailUpdate() {
     setTimeout(() => {
       setDisabled(false);
     }, 3000);
-    if (
-      password === confirmPassword &&
-      emailValidation(email) &&
-      validatePassword(password)
-    ) {
-      Firebase.getCurrentUser()
-        .updateEmail(email)
-        .then(() => {
-          success();
-          router.push("/dashboard");
-        })
-        .catch((e) => error(e.message));
-    } else if (password === confirmPassword && !emailValidation(email)) {
-      error("Email is invalid");
-    } else if (
-      !passwordValidation(password) ||
-      !passwordValidation(confirmPassword)
-    ) {
-      error(
-        "Passwords should be between 6 and 20 characters long which contain at least one numeric digit, one uppercase and one lowercase letter"
-      );
-    } else if (!password === confirmPassword && emailValidation(email)) {
-      error("Passwords do not match");
-    } else if (email === Firebase.getCurrentUser().email) {
-      error("Email can not be the same");
-    } else {
-      error("Passwords do not match and email is invalid");
-    }
+
+    Firebase.getCurrentUser()
+      .updateEmail(email)
+      .then(() => {
+        firestore
+          .collection("users")
+          .where("email", "==", Firebase.getCurrentUser().email)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              doc.update({ email: email });
+              success();
+              router.push("/dashboard");
+            });
+          });
+      })
+      .catch((e) => error(e.message));
   });
 
   // Modals
@@ -117,14 +103,13 @@ export default function emailUpdate() {
           >
             <Form.Item
               hasFeedback={dirty}
-              validateStatus={emailValidation(email) ? "success" : "error"}
               rules={[
                 {
                   required: true,
                   message: "Please input your Email!",
                 },
                 {
-                  email: true,
+                  type: "email",
                   message: "This is not a valid email address",
                 },
               ]}
@@ -140,21 +125,10 @@ export default function emailUpdate() {
             </Form.Item>
             <Form.Item
               hasFeedback={dirty}
-              validateStatus={
-                passwordValidation(password) ? "success" : "error"
-              }
               rules={[
                 {
                   required: true,
                   message: "Please input your Password!",
-                },
-                {
-                  min: 6,
-                  message: `Password can not be fewer than 6 characters`,
-                },
-                {
-                  max: 20,
-                  message: `Password can not be longer than 20 characters`,
                 },
               ]}
             >
@@ -162,9 +136,6 @@ export default function emailUpdate() {
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 name="password"
-                min="6"
-                max="20"
-                pattern=""
                 placeholder="Password"
                 value={password}
                 onChange={handleChange}
@@ -172,29 +143,16 @@ export default function emailUpdate() {
             </Form.Item>
             <Form.Item
               hasFeedback={dirty}
-              validateStatus={
-                passwordValidation(confirmPassword) ? "success" : "error"
-              }
               rules={[
                 {
                   required: true,
                   message: "Please input your Password!",
-                },
-                {
-                  min: 6,
-                  message: `Password can not be fewer than 6 characters`,
-                },
-                {
-                  max: 20,
-                  message: `Password can not be longer than 20 characters`,
                 },
               ]}
             >
               <Input.Password
                 prefix={<icons.LockFilled className="site-form-item-icon" />}
                 type="password"
-                min="6"
-                max="20"
                 placeholder="Confirm Password"
                 name="confirmPassword"
                 value={confirmPassword}

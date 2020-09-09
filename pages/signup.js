@@ -82,13 +82,13 @@ export default function RegistrationForm() {
           .collection("users")
           .add({
             username: values.username,
-            password: values.password,
             email: values.email,
             birthdate: values.date._d,
             gender: values.gender,
             region: values.region,
             country: values.country,
             phone: values.phone,
+            image: null,
           })
           .then((data) => {
             success();
@@ -142,7 +142,6 @@ export default function RegistrationForm() {
   });
   const handleDate = (date, dateString) => {
     setDate(new Date(dateString));
-    console.log(date);
   };
   // UI
 

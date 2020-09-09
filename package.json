@@ -10,13 +10,19 @@
   "dependencies": {
     "ant-design": "^1.0.0",
     "antd": "^4.6.2",
+    "antd-img-crop": "^3.10.0",
     "firebase": "^7.19.1",
     "firebaseui": "^4.6.1",
     "next": "9.5.3",
+    "profile-picture": "git+https://github.com/dsalvagni/react-profile-picture.git",
+    "prop-types": "^15.7.2",
     "react": "16.13.1",
+    "react-avatar": "^3.9.7",
     "react-country-region-selector": "^2.1.0",
     "react-dom": "16.13.1",
     "react-drag-drawer": "^3.3.4",
-    "react-google-recaptcha": "^2.1.0"
+    "react-google-recaptcha": "^2.1.0",
+    "react-images-upload": "^1.2.8",
+    "react-images-uploading": "^3.0.1"
   }
 }

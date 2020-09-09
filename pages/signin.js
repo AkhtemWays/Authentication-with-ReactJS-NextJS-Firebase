@@ -19,6 +19,13 @@ export default function NormalLoginForm() {
 
   useEffect(() => {
     setLoading(true);
+    Firebase.firestore
+      .collection("users")
+      .where("email", "==", "ahty.study@bk.ru")
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => console.log(doc.data()));
+      });
     Firebase.getAuthState().then((user) => {
       if (user) {
         router.replace("/dashboard");
@@ -26,6 +33,7 @@ export default function NormalLoginForm() {
       setLoading(false);
     });
   }, []);
+
   const onFinish = useCallback((ev) => {
     setDisabled(true);
     setTimeout(() => {
@@ -37,9 +45,7 @@ export default function NormalLoginForm() {
         router.push("/dashboard");
       })
       .catch((e) => {
-        console.log(e.message);
-        setErrorMessage(e.message);
-        error();
+        error(e.message);
       });
   });
 
@@ -124,7 +130,7 @@ export default function NormalLoginForm() {
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
 
-              <Link href="/test">
+              <Link href="/password-reset">
                 <a className="login-form-forgot">Forgot password</a>
               </Link>
             </Form.Item>
